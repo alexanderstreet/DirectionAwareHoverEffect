@@ -101,6 +101,13 @@
             }
 
             this.$hoverElem.hide().css(styleCSS.from);
+            this.$hoverElem
+                .parent()
+                .css('overflow', 'visible');
+            this.$hoverElem
+                .parent()
+                .parent()
+                .css('zIndex', 20);
             clearTimeout(this.tmhover);
 
             this.tmhover = setTimeout($.proxy(function () {
@@ -123,8 +130,14 @@
             if (this.support) {
                 this.$hoverElem.css('transition', this.transitionProp);
             }
+            this.$hoverElem.parent().css('overflow', 'hidden');
+            this.$hoverElem
+                .parent()
+                .parent()
+                .css('zIndex', 10);
             clearTimeout(this.tmhover);
             this._applyAnimation(styleCSS.from);
+            this.$hoverElem.hide(this.options.speed + 500);
             this.isVisible = false;
         },
         /**
@@ -236,6 +249,8 @@
         destroy: function () {
             this.$el.off('mouseenter.hoverdir mouseleave.hoverdir');
             this.$el.data('hoverdir', null);
+            this.$hoverElem.hide();
+            this.$hoverElem.removeAttr('style');
         },
         /**
          * Bind the plugin.
